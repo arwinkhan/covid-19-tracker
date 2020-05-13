@@ -3,11 +3,10 @@
  }
 
  .navBar {
-   flex: 0 0 10%;
+   flex: 0 0 8%;
    min-height: 100vh;
    background-color: #1A1053;
    color: rgba(255, 255, 255, .9);
-   /* color: (props)=> props.isDarkMode ? "rgba(255,255,255,.87)": "rgba(255,255,255,.9)", */
    text-transform: capitalize;
    display: flex;
    justify-content: center;
@@ -18,4 +17,20 @@
    padding: 4rem;
    position: relative;
    overflow: hidden;
+ }
+
+ @media (max-width: 991.98px) {
+   .root {
+     flex-direction: column;
+   }
+
+   .navBar {
+     min-height: 10vh;
+     justify-content: space-around;
+     align-items: center;
+   }
+
+   .mainContent {
+     padding: 0;
+   }
  }

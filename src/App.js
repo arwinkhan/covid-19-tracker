@@ -5,6 +5,8 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import { Switch, Route } from "react-router-dom";
 import StaySafe from "./components/StaySafe";
+import Help from "./components/Help";
+import Symptoms from "./components/Symptoms";
 
 class App extends Component {
   constructor(props) {
@@ -39,9 +41,9 @@ class App extends Component {
                   />
                 )}
               />
-              <Route exact path="/symptoms" render={() => <h1>symptoms</h1>} />
+              <Route exact path="/symptoms" render={() => <Symptoms />} />
               <Route exact path="/stay-safe" render={() => <StaySafe />} />
-              <Route exact path="/help" render={() => <h1>Help Page</h1>} />
+              <Route exact path="/essentials" render={() => <Help />} />
               <Route
                 path="/"
                 render={() => (

@@ -1,9 +1,11 @@
 import colors from "../constants/colors";
+import sizes from "./sizes";
 
 export default {
   header: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "center",
   },
 
   heading: {
@@ -16,6 +18,77 @@ export default {
       color: colors.purple,
       marginRight: "1rem",
     },
+
+    [sizes.down("md")]: {
+      fontSize: "2.8rem",
+      padding: "3rem",
+    },
+
+    [sizes.down("xs")]: {
+      fontSize: "2rem",
+      padding: "3rem",
+    },
+  },
+
+  updates: {
+    marginLeft: "auto",
+    position: "relative",
+  },
+
+  notification: {
+    fontSize: "3rem",
+    color: colors.darkPurple,
+    position: "relative",
+    transition: "all .4s ease",
+
+    "&:hover": {
+      transform: "scale(1.15)",
+      color: "#000",
+    },
+  },
+
+  notificationBell: {
+    position: "relative",
+
+    "&::before": {
+      content: '""',
+      position: "absolute",
+      width: "1rem",
+      height: "1rem",
+      backgroundColor: "red",
+      borderRadius: "10rem",
+      top: "1rem",
+      right: 0,
+    },
+  },
+
+  lastUpdatedTime: {
+    marginLeft: "1.5rem",
+    fontSize: "1.5rem",
+  },
+
+  update: {
+    fontSize: "1.5rem",
+    display: "block",
+    position: "absolute",
+    left: "-25rem",
+    backgroundColor: "rgba(255,255,255,.95)",
+    borderRadius: "2rem",
+    boxShadow: "0 1rem 2rem rgba(0,0,0,.15)",
+    padding: "3rem",
+    zIndex: "1",
+    transition: "all .5s",
+  },
+
+  updateBox: {
+    marginBottom: "1.5rem",
+  },
+
+  updateHeading: {
+    textTransform: "capitalize",
+  },
+  updateText: {
+    fontWeight: "400",
   },
 
   content: {
@@ -23,9 +96,17 @@ export default {
     borderRadius: "2rem",
     marginTop: "3rem",
     display: "flex",
-    padding: "4rem",
     flexDirection: "column",
     justifyContent: "center",
+
+    [sizes.down("md")]: {
+      marginTop: "2.5rem",
+      padding: "1.5rem",
+    },
+    [sizes.down("xs")]: {
+      marginTop: "2.5rem",
+      padding: "0",
+    },
   },
 
   contentArea: {
@@ -46,12 +127,43 @@ export default {
   tableContainer: {
     padding: "2rem",
     margin: "5rem 0",
+
+    [sizes.down("md")]: {
+      margin: "3.5rem 0",
+      padding: "1.5rem",
+    },
+
+    [sizes.down("sm")]: {
+      margin: "1.2rem 0",
+      padding: "0",
+    },
   },
 
   tableHeading: {
     textAlign: "center",
-    margin: "4rem 0",
+    marginTop: "2.5rem",
     fontSize: "3rem",
+
+    [sizes.down("lg")]: {
+      fontSize: "2.5rem",
+      marginTop: "1.5rem",
+    },
+
+    [sizes.down("md")]: {
+      marginTop: ".5rem",
+    },
+
+    [sizes.down("sm")]: {
+      marginTop: ".2rem",
+      fontSize: "1.3rem",
+    },
+  },
+
+  chartRes: {
+    // margin: "0 auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   tinyChartArea: {
@@ -64,13 +176,16 @@ export default {
   },
 
   tinyChart: {
-    // width: "50%",
+    width: "30%",
     margin: "2.5rem",
     "& h3": {
       textTransform: "capitalize",
       fontWeight: 500,
 
       textAlign: "center",
+    },
+    [sizes.down("lg")]: {
+      width: "auto",
     },
   },
 
@@ -86,6 +201,10 @@ export default {
     animationDuration: "1s",
     animationTimingFunction: "linear",
     animationIterationCount: "infinite",
+
+    [sizes.down("md")]: {
+      fontSize: "3rem",
+    },
   },
 
   loadingIcon: {
@@ -105,6 +224,9 @@ export default {
   },
 
   button: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     border: "none",
     backgroundColor: colors.purple,
     padding: "1.5rem 3rem",
@@ -116,6 +238,17 @@ export default {
     transition: "all .4s",
     boxShadow: "0 .5rem 1rem rgba(0,0,0,.2)",
     position: "relative",
+
+    [sizes.down("md")]: {
+      fontSize: "1.5rem",
+      borderRadius: "100px",
+      marginLeft: 0,
+      padding: "1rem",
+    },
+
+    [sizes.down("xs")]: {
+      fontSize: "1rem",
+    },
 
     "&:hover": {
       backgroundColor: colors.darkPurple,

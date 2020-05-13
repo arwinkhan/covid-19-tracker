@@ -8,7 +8,6 @@ import "../styles/DisplayTable.css";
 
 const useSortableData = (items, config = null) => {
   const [sortConfig, setSortConfig] = React.useState(config);
-
   const sortedItems = React.useMemo(() => {
     let sortableItems = [...items];
     if (sortConfig !== null) {
@@ -40,19 +39,8 @@ const useSortableData = (items, config = null) => {
   return { items: sortedItems, requestSort, sortConfig };
 };
 
-const DisplayTable = ({ tableData, isDarkMode }) => {
+const DisplayTable = ({ tableData, isDarkMode, districtLevel }) => {
   let result;
-  // active: "2510";
-  // confirmed: "3738";
-  // deaths: "61";
-  // deltaconfirmed: "0";
-  // deltadeaths: "0";
-  // deltarecovered: "0";
-  // lastupdatedtime: "01/05/2020 21:22:46";
-  // recovered: "1167";
-  // state: "Delhi";
-  // statecode: "DL";
-  // statenotes: "";
   try {
     result = tableData.map((dataItem) => {
       let newObject = {};
@@ -68,10 +56,59 @@ const DisplayTable = ({ tableData, isDarkMode }) => {
           newObject[key] = Number(value);
         }
       }
-
       return newObject;
     });
   } catch (err) {}
+
+  const getDistrictData = (statecode) => {
+    try {
+      const stateWithDist = districtLevel.find(
+        (state) => state.statecode === statecode
+      );
+      const districtData = stateWithDist.districtData.map((dist) => (
+        <tr className="district-tr" key={dist.district}>
+          <td className="district-td" style={lightText}>
+            {dist.district}
+          </td>
+          <td className="district-td" style={lightText}>
+            {dist.confirmed}
+            {dist.delta.confirmed > 0 && (
+              <span className="delta-confirmed">[{dist.delta.confirmed}] </span>
+            )}
+          </td>
+          <td className="district-td" style={lightText}>
+            {dist.active}
+          </td>
+          <td className="district-td" style={lightText}>
+            {dist.recovered}
+            {dist.delta.recovered > 0 && (
+              <span className="delta-recovered">[{dist.delta.recovered}] </span>
+            )}
+          </td>
+          <td className="district-td" style={lightText}>
+            {dist.deceased}
+            {dist.delta.deceased > 0 && (
+              <span className="delta-deceased">[{dist.delta.deceased}] </span>
+            )}
+          </td>
+        </tr>
+      ));
+      const markup = (
+        <>
+          <tr className="district-tr" key={`${statecode} Dist`}>
+            <th className="tableHead districtHead">District</th>
+            <th className="tableHead districtHead">Confirmed</th>
+            <th className="tableHead districtHead">Active</th>
+            <th className="tableHead districtHead">Recovered</th>
+            <th className="tableHead districtHead">Deceased</th>
+          </tr>
+          {districtData}
+          <tr className="spacer-bottom"></tr>
+        </>
+      );
+      return markup;
+    } catch (err) {}
+  };
 
   const { items, requestSort, sortConfig } = useSortableData(result);
   const [displayDist, setDisplayDist] = useState(false);
@@ -95,50 +132,57 @@ const DisplayTable = ({ tableData, isDarkMode }) => {
 
   return (
     <table>
-      {/* <caption>Products</caption> */}
+      <caption
+        style={{
+          marginTop: "1rem",
+          marginBottom: "4rem",
+        }}
+      >
+        Expand to get district wise data
+      </caption>
       <thead>
         <tr>
-          <th>
+          <th className="tableHead">
             <button
               type="button"
               onClick={() => requestSort("state")}
-              className={getClassNamesFor("state")}
+              className={`tableHead-Button ${getClassNamesFor("state")}`}
             >
               Name
             </button>
           </th>
-          <th>
+          <th className="tableHead">
             <button
               type="button"
               onClick={() => requestSort("confirmed")}
-              className={getClassNamesFor("confirmed")}
+              className={`tableHead-Button ${getClassNamesFor("confirmed")}`}
             >
               Confirmed
             </button>
           </th>
-          <th>
+          <th className="tableHead">
             <button
               type="button"
               onClick={() => requestSort("active")}
-              className={getClassNamesFor("active")}
+              className={`tableHead-Button ${getClassNamesFor("active")}`}
             >
               Active
             </button>
           </th>
-          <th>
+          <th className="tableHead">
             <button
               type="button"
               onClick={() => requestSort("recovered")}
-              className={getClassNamesFor("recovered")}
+              className={`tableHead-Button ${getClassNamesFor("recovered")}`}
             >
               Recovered
             </button>
           </th>
-          <th>
+          <th className="tableHead">
             <button
               type="button"
               onClick={() => requestSort("deaths")}
-              className={getClassNamesFor("deaths")}
+              className={`tableHead-Button ${getClassNamesFor("deaths")}`}
             >
               Deceased
             </button>
@@ -147,34 +191,51 @@ const DisplayTable = ({ tableData, isDarkMode }) => {
       </thead>
       <tbody>
         {items.map((item) => (
-          <tr key={item.statecode}>
-            <td style={lightText}>
-              <FontAwesomeIcon
-                icon={
-                  distId === item.statecode && displayDist
-                    ? faArrowCircleDown
-                    : faArrowCircleRight
-                }
-                className=""
-                onClick={() => toggleDistView(item.statecode)}
-              />{" "}
-              {item.state}
-            </td>
+          <React.Fragment key={item.statecode}>
+            <tr className="state-tr">
+              <td className="state-td" style={lightText}>
+                <FontAwesomeIcon
+                  icon={
+                    distId === item.statecode && displayDist
+                      ? faArrowCircleDown
+                      : faArrowCircleRight
+                  }
+                  className=""
+                  onClick={() => toggleDistView(item.statecode)}
+                />{" "}
+                {item.state}
+              </td>
 
-            <td style={lightText}>{item.confirmed}</td>
-            <td style={lightText}>{item.active}</td>
-            <td style={lightText}>{item.recovered}</td>
-            <td style={lightText}>{item.deaths}</td>
-          </tr>
-          /* {distId === item.id && displayDist ? (
-              <tr>
-                <td style={lightText}>{item.name}</td>
-                <td style={lightText}>{item.confirmed}</td>
-                <td style={lightText}>{item.active}</td>
-                <td style={lightText}>{item.discharged}</td>
-                <td style={lightText}>{item.deaths}</td>
-              </tr>
-            ) : null} */
+              <td className="state-td" style={lightText}>
+                {item.confirmed}
+                {item.deltaconfirmed > 0 && (
+                  <span className="delta-confirmed">
+                    [{item.deltaconfirmed}]{" "}
+                  </span>
+                )}
+              </td>
+              <td className="state-td" style={lightText}>
+                {item.active}
+              </td>
+              <td className="state-td" style={lightText}>
+                {item.recovered}
+                {item.deltarecovered > 0 && (
+                  <span className="delta-recovered">
+                    [{item.deltarecovered}]{" "}
+                  </span>
+                )}
+              </td>
+              <td className="state-td" style={lightText}>
+                {item.deaths}
+                {item.deltadeaths > 0 && (
+                  <span className="delta-deceased">[{item.deltadeaths}] </span>
+                )}
+              </td>
+            </tr>
+            {distId === item.statecode && displayDist
+              ? getDistrictData(item.statecode)
+              : null}
+          </React.Fragment>
         ))}
       </tbody>
     </table>
